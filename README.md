@@ -1,4 +1,4 @@
-# URL Parser in C
+# URL Parser Library in C
 
 ## Example
 
