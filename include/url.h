@@ -1,6 +1,8 @@
 #ifndef URL_H
 #define URL_H
 
+#define LIBURL_VERSION "0.0.0"
+
 struct url_t {
   char *protocol;
   char *host;
