@@ -1,33 +1,34 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (url)
 
-INCLUDE (ExternalProject)
-
-SET (VENDOR ${CMAKE_SOURCE_DIR}/vendor)
-
-# liburl
 FILE (GLOB LIBURL_SOURCES src/*.c)
 INCLUDE_DIRECTORIES (include/)
 ADD_LIBRARY (url ${LIBURL_SOURCES})
 
-# GoogleTest
-EXTERNALPROJECT_ADD (googletest
-  GIT_REPOSITORY "${VENDOR}/gtest"
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-  INSTALL_COMMAND ""
-  )
+OPTION (BUILD_TEST "Build run_test command" OFF)
+IF (${BUILD_TEST})
+  INCLUDE (ExternalProject)
+  SET (VENDOR ${CMAKE_SOURCE_DIR}/vendor)
 
-EXTERNALPROJECT_GET_PROPERTY (googletest source_dir)
-INCLUDE_DIRECTORIES (${source_dir}/include)
-EXTERNALPROJECT_GET_PROPERTY (googletest binary_dir)
-LINK_DIRECTORIES (${binary_dir})
+  # GoogleTest
+  EXTERNALPROJECT_ADD (googletest
+    GIT_REPOSITORY "${VENDOR}/gtest"
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
+    INSTALL_COMMAND ""
+    )
 
-FILE (GLOB TESTING_SOURCES test/*_test.cpp)
-ADD_EXECUTABLE (run_test ${TESTING_SOURCES})
-ADD_DEPENDENCIES (run_test googletest)
-TARGET_LINK_LIBRARIES (run_test
-  gtest
-  gtest_main
-  pthread
-  url
-  )
+  EXTERNALPROJECT_GET_PROPERTY (googletest source_dir)
+  INCLUDE_DIRECTORIES (${source_dir}/include)
+  EXTERNALPROJECT_GET_PROPERTY (googletest binary_dir)
+  LINK_DIRECTORIES (${binary_dir})
+
+  FILE (GLOB TESTING_SOURCES test/*_test.cpp)
+  ADD_EXECUTABLE (run_test ${TESTING_SOURCES})
+  ADD_DEPENDENCIES (run_test googletest)
+  TARGET_LINK_LIBRARIES (run_test
+    gtest
+    gtest_main
+    pthread
+    url
+    )
+ENDIF (${BUILD_TEST})

@@ -12,7 +12,7 @@ addons:
       - valgrind
 
 install:
-  - ./script/build.sh
+  - ./script/build.sh -DBUILD_TEST=ON
 
 script:
   - valgrind --leak-check=full --show-reachable=yes --error-exitcode=1 ./build/run_test
