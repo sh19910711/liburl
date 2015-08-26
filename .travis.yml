@@ -1,0 +1,18 @@
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - valgrind
+
+install:
+  - ./script/build.sh
+
+script:
+  - valgrind --leak-check=full --show-reachable=yes --error-exitcode=1 ./build/run_test
