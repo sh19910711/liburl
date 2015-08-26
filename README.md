@@ -32,6 +32,8 @@ $ cmake ..
 $ make
 ```
 
+## LICENSE
+
 ```txt
 The MIT License (MIT)
 
