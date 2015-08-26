@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *copy_string(const char *s, int len);
 static int has_port(const char *s);
 static const char *parse_protocol(struct url_t *self, const char *p);
 static const char *parse_host(struct url_t *self, const char *p);
@@ -29,18 +28,11 @@ struct url_t *url_parse(const char *url) {
     return NULL;
   }
 
-  self->path = copy_string(p, strlen(p));
+  self->path = strdup(p);
   return self;
 }
 
 /*** private functions ***/
-
-static char *copy_string(const char *s, int len) {
-  char *res = (char *) malloc(sizeof(char) * len + 1);
-  strncpy(res, s, len);
-  res[len] = '\0';
-  return res;
-}
 
 static int has_port(const char *s) {
   const char *slash = strchr(s, '/');
@@ -56,7 +48,7 @@ static const char *parse_protocol(struct url_t *self, const char *p) {
 
   if (q = strstr(p, "://")) {
     int len = q - p;
-    self->protocol = copy_string(p, len);
+    self->protocol = strndup(p, len);
     return q + 3;
   } else {
     return NULL;
@@ -68,7 +60,7 @@ static const char *parse_host(struct url_t *self, const char *p) {
 
   if (q = strchr(p, self->has_port ? ':' : '/')) {
     int len = q - p;
-    self->host = copy_string(p, len);
+    self->host = strndup(p, len);
     return q + 1;
   } else {
     return NULL;
@@ -81,7 +73,7 @@ static const char *parse_port(struct url_t *self, const char *p) {
   if (self->has_port) {
     if (q = strchr(p, '/')) {
       int len = q - p;
-      self->port = copy_string(p, len);
+      self->port = strndup(p, len);
       return q + 1;
     } else {
       return NULL;
