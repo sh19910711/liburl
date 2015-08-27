@@ -1,6 +1,6 @@
 # URL Parser Library in C
 
-[![Build Status](https://img.shields.io/travis/sh19910711/liburl.svg?style=flat-square)](https://travis-ci.org/sh19910711/liburl)
+[![Build Status](https://travis-ci.org/sh19910711/liburl.svg)](https://travis-ci.org/sh19910711/liburl)
 
 ## Example
 
